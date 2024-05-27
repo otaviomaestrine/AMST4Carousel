@@ -1,6 +1,7 @@
 ﻿using AMST4.Carousel.MVC.Context;
 using AMST4_Carousel.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AMST4_Carousel.MVC.Controllers
 {
@@ -17,8 +18,16 @@ namespace AMST4_Carousel.MVC.Controllers
             return View(products);
         }
         [HttpPost]
-        public IActionResult AddProduct(Product product)
+        public async Task  <IActionResult> AddProduct(Product product,IFormFile image)
         {
+            var Filename = Guid.NewGuid().ToString() + image.FileName;
+            var Filepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Product", Filename);
+            using (var stream = new FileStream(Filepath,FileMode.Create))
+            {
+               await image.CopyToAsync(stream);
+            }
+            product.ImageUrl = Path.Combine("images", "Product", Filename);
+            product.Id = Guid.NewGuid();
             _DataContext.Product.Add(product);
             _DataContext.SaveChanges();
             product.Id = new Guid();
@@ -53,7 +62,45 @@ namespace AMST4_Carousel.MVC.Controllers
             await _DataContext.SaveChangesAsync();
 
             return RedirectToAction("ProductList");
+
         }
+
+        public async Task<IActionResult> EditProduct(Guid id, Product product, IFormFile image)
+        {
+            if (id != product.Id)
+            {
+                return NotFound();
+            }
+
+
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Product", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+            var UrlImage = Path.Combine("images", "Product", fileName);
+
+            if (!string.IsNullOrEmpty(product.ImageUrl))
+            {
+                var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Product", product.ImageUrl);
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+            product.ImageUrl = UrlImage;
+
+
+            _DataContext.Update(product);
+            await _DataContext.SaveChangesAsync();
+            return RedirectToAction(nameof(ProductList));
+
+
+        }
+
     }
 
 

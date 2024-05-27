@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AMST4.Carousel.MVC.Context;
 using AMST4_Carousel.MVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AMST4_Carousel.MVC.Controllers
 {
@@ -17,8 +18,16 @@ namespace AMST4_Carousel.MVC.Controllers
             return View(categories);
         }
         [HttpPost]
-        public IActionResult AddCategory(Category category)
+        public async Task<IActionResult> AddCategory(Category category, IFormFile image)
         {
+            var Filename = Guid.NewGuid().ToString() + image.FileName;
+            var Filepath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Category", Filename);
+            using (var stream = new FileStream(Filepath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+            category.ImageUrl = Path.Combine("images", "Category", Filename);
+
             _DataContext.Category.Add(category);
             _DataContext.SaveChanges();
             category.Id = new Guid();
@@ -56,6 +65,26 @@ namespace AMST4_Carousel.MVC.Controllers
 
             return RedirectToAction("CategoryList");
         }
+        [HttpPost]
+        public async Task<IActionResult> EditCategory(Category category, IFormFile image)
+        {
+            if (image != null)
+            {
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Category", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await image.CopyToAsync(stream);
+                }
+
+                category.ImageUrl = Path.Combine("images", "Category", fileName);
+            }
+
+            _DataContext.Category.Update(category);
+            await _DataContext.SaveChangesAsync();
+            return RedirectToAction("CategoryList");
         }
+    }
 
     }
