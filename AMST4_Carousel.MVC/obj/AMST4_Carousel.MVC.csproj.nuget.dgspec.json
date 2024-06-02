@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Cliente\\Desktop\\jf\\AMST4_Carousel.MVC\\AMST4_Carousel.MVC.csproj": {}
+    "C:\\Users\\Cliente\\Desktop\\ga\\AMST4_Carousel.MVC\\AMST4_Carousel.MVC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Cliente\\Desktop\\jf\\AMST4_Carousel.MVC\\AMST4_Carousel.MVC.csproj": {
+    "C:\\Users\\Cliente\\Desktop\\ga\\AMST4_Carousel.MVC\\AMST4_Carousel.MVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Cliente\\Desktop\\jf\\AMST4_Carousel.MVC\\AMST4_Carousel.MVC.csproj",
+        "projectUniqueName": "C:\\Users\\Cliente\\Desktop\\ga\\AMST4_Carousel.MVC\\AMST4_Carousel.MVC.csproj",
         "projectName": "AMST4_Carousel.MVC",
-        "projectPath": "C:\\Users\\Cliente\\Desktop\\jf\\AMST4_Carousel.MVC\\AMST4_Carousel.MVC.csproj",
+        "projectPath": "C:\\Users\\Cliente\\Desktop\\ga\\AMST4_Carousel.MVC\\AMST4_Carousel.MVC.csproj",
         "packagesPath": "C:\\Users\\Cliente\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Cliente\\Desktop\\jf\\AMST4_Carousel.MVC\\obj\\",
+        "outputPath": "C:\\Users\\Cliente\\Desktop\\ga\\AMST4_Carousel.MVC\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Cliente\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -45,6 +45,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.4, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.4, )"

@@ -1,4 +1,6 @@
 using AMST4.Carousel.MVC.Context;
+using AMST4_Carousel.MVC.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,13 @@ builder.Services.AddDbContext<DataContext>(opts =>
 {
     opts.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddIdentity<User, IdentityRole>(options =>
+{
+    options.Password.RequiredLength = 6;
+}).AddEntityFrameworkStores<DataContext>()
+.AddDefaultTokenProviders();
+
 
 var app = builder.Build();
 
